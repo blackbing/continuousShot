@@ -45,8 +45,6 @@ define([
           Filter[$filter.val()](canvas);
         }
         $(canvas).data('currentTime', currentTime).prependTo($('#output'));
-        //console.log(canvas.toDataURL());
-        //output.prepend(canvas);
     },
 
     preview: function(currentTime){
@@ -78,16 +76,21 @@ define([
   }
 
   $(document).ready(function(){
+    //create a video in background, just for preview capture.
     var $backgroundVideo = $('#video').clone().attr({
+      //cancel loop
       'loop': false,
       'id':'backgroundVideo'
     }).appendTo('#bg');
     video.backgroundVideo = $backgroundVideo[0];
+    //mute
     video.backgroundVideo.muted = true;
+    //preloading video
     video.backgroundVideo.load();
-    //trigger seeked
+    //seeked event will be triggered after currentTime changed
     $backgroundVideo.bind('seeked', function(){
-      if(video.deferred)
+      //resolve Deferred
+      if(!video.deferred.isResolved())
         video.deferred.resolve();
     });
   });

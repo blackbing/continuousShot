@@ -5,7 +5,9 @@ require([
 ], function(module, video, sound){
 
   var flashIt = function(){
-    $('.flash').css('opacity', 0.5).show().animate({opacity:0}, 100);
+    $('.flash').css('opacity', 0.5).show().animate({opacity:0}, 100, function(){
+      $(this).hide();
+    });
   };
   var captureSt = null;
   $('#control').on('click', function(){
@@ -14,7 +16,6 @@ require([
       $('#video')[0].play();
       $(this).removeClass().addClass('shot');
     }else if($(this).hasClass('shot')){
-      console.log('trigger shot!!')
       flashIt();
 
       video.shoot();
