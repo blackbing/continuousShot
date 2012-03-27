@@ -15,10 +15,10 @@ html, body{
   left:50%;
   top:50px;
   margin-left:-354px;
-  width:708;
-  height:396;
+  width:708px;
+  height:396px;
   position: absolute;
-  z-index: 99;
+  z-index:1;
 }
 #videoWrap video{
   position:absolute;
