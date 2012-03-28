@@ -1,8 +1,12 @@
-###Run 
+###Compile CoffeeScript
+
+    ./compileScript.sh
+
+###Run Server
 It need to run on server, you can simply use:
 
-    python -m SimpleHTTPServer 8888
-    
-and open 
+    ./runSimpleServer.sh
+
+and open
 
     http://localhost:8888
