@@ -1,99 +1,78 @@
-define([
-  'javascript/filter.js'
-],function(Filter){
-  var video = {
-    deferred: $.Deferred(),
-    videoId : 'video',
-    previewSize:{
-      width: 197*0.3,
-      height: 351*0.3
-    },
+(function() {
 
-    capture: function(video, size) {
-      var $video = $(video);
-
-      var $device = $('#device');
-      var scaleFactor =  video.videoWidth/$video.width()
-
-      var canvas = document.createElement('canvas');
-      canvas.width  = size.width;
-      canvas.height = size.height;
-      var ctx = canvas.getContext('2d');
-      var sX = ($('#device').position().left+ 22)*scaleFactor;
-      var sY = 29*scaleFactor;
-      var sWidth = 197*scaleFactor;
-      var sHeight = 351*scaleFactor;
-
-      ctx.drawImage(video, sX, sY, sWidth, sHeight,
-          0,0, canvas.width, canvas.height);
-      //ctx.drawImage(video, sX, sY, $device.width(), $device.height());
-      return canvas;
-    },
-
-
-    /**
-     * Invokes the <code>capture</code> function and attaches the canvas element to the DOM.
-     */
-    shoot: function(size){
+  define(["javascript/filter.js"], function(Filter) {
+    var Video;
+    Video = {
+      deferred: $.Deferred(),
+      videoId: "video",
+      previewSize: {
+        width: 197 * 0.3,
+        height: 351 * 0.3
+      },
+      capture: function(video, size) {
+        var $device, $video, canvas, ctx, sHeight, sWidth, sX, sY, scaleFactor;
+        $video = $(video);
+        $device = $("#device");
+        scaleFactor = video.videoWidth / $video.width();
+        canvas = document.createElement("canvas");
+        canvas.width = size.width;
+        canvas.height = size.height;
+        ctx = canvas.getContext("2d");
+        sX = ($("#device").position().left + 22) * scaleFactor;
+        sY = 29 * scaleFactor;
+        sWidth = 197 * scaleFactor;
+        sHeight = 351 * scaleFactor;
+        ctx.drawImage(video, sX, sY, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+        return canvas;
+      },
+      shoot: function(size) {
+        var $filter, canvas, currentTime, output, video;
         size = size || this.previewSize;
-        var video  = $(this.videoId)[0];
-        var currentTime = video.currentTime;
-        var output = $('#output');
-        var canvas = this.capture(video, size);
+        video = $(this.videoId)[0];
+        currentTime = video.currentTime;
+        output = $("#output");
+        canvas = this.capture(video, size);
         $filter = $('input[name="filter"]:checked');
-        if($filter.val()){
-          Filter[$filter.val()](canvas);
-        }
-        $(canvas).data('currentTime', currentTime).prependTo($('#output'));
-    },
-
-    preview: function(currentTime){
-      var me = this;
-      $preview = $('.preview');
-      var size = {
-        width:$preview.width(),
-        height: $preview.height()
-      };
-      var bgVideo  = $('#backgroundVideo')[0];
-      bgVideo.currentTime = currentTime;
-      $preview.empty().show();
-
-      //capture while seeked
-      this.deferred = $.Deferred();
-      this.deferred.done(function(){
-        var output = $('#output');
-        var canvas = me.capture(bgVideo, size);
-        $filter = $('input[name="filter"]:checked');
-        if($filter.val()){
-          Filter[$filter.val()](canvas);
-        }
-        $preview.append($(canvas).hide());
-        $(canvas).fadeIn('fast');
-
-        //$('body').append($(canvas));
+        if ($filter.val()) Filter[$filter.val()](canvas);
+        return $(canvas).data("currentTime", currentTime).prependTo($("#output"));
+      },
+      preview: function(currentTime) {
+        var $preview, bgVideo, size,
+          _this = this;
+        $preview = $(".preview");
+        size = {
+          width: $preview.width(),
+          height: $preview.height()
+        };
+        bgVideo = $("#backgroundVideo")[0];
+        bgVideo.currentTime = currentTime;
+        $preview.empty().show();
+        this.deferred = $.Deferred();
+        return this.deferred.done(function() {
+          var $filter, canvas, output;
+          output = $("#output");
+          canvas = _this.capture(bgVideo, size);
+          $filter = $('input[name="filter"]:checked');
+          if ($filter.val()) Filter[$filter.val()](canvas);
+          $preview.append($(canvas).hide());
+          return $(canvas).fadeIn("fast");
+        });
+      }
+    };
+    $(document).ready(function() {
+      var $backgroundVideo;
+      $backgroundVideo = $("#video").clone().attr({
+        loop: false,
+        id: "backgroundVideo"
+      }).appendTo("#bg");
+      Video.backgroundVideo = $backgroundVideo[0];
+      Video.backgroundVideo.muted = true;
+      Video.backgroundVideo.load();
+      return $backgroundVideo.bind("seeked", function() {
+        if (!Video.deferred.isResolved()) return Video.deferred.resolve();
       });
-    }
-  }
-
-  $(document).ready(function(){
-    //create a video in background, just for preview capture.
-    var $backgroundVideo = $('#video').clone().attr({
-      //cancel loop
-      'loop': false,
-      'id':'backgroundVideo'
-    }).appendTo('#bg');
-    video.backgroundVideo = $backgroundVideo[0];
-    //mute
-    video.backgroundVideo.muted = true;
-    //preloading video
-    video.backgroundVideo.load();
-    //seeked event will be triggered after currentTime changed
-    $backgroundVideo.bind('seeked', function(){
-      //resolve Deferred
-      if(!video.deferred.isResolved())
-        video.deferred.resolve();
     });
+    return Video;
   });
-  return video;
 
-})
+}).call(this);

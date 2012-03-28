@@ -1,10 +1,13 @@
-define(function(){
-  var Sound = {
-    cameraShot: function(){
-      //soundManager.createSound('camera-click', 'sound/camera-click.mp3').play();
-      soundManager.createSound('camera-click', 'sound/camera_click.ogg').play();
+(function() {
 
-    }
-  };
-  return Sound;
-})
+  define(function() {
+    var Sound;
+    Sound = {
+      cameraShot: function() {
+        return soundManager.createSound("camera-click", "sound/camera_click.ogg").play();
+      }
+    };
+    return Sound;
+  });
+
+}).call(this);

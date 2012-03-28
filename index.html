@@ -38,29 +38,28 @@
         <li><label><input type="radio" name="filter" value="blur">blur</label></li>
       </ul>
     </div>
-    <audio id="audio" src="sound/camera-click.mp3" ></audio>
     <div id="bg"></div>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascript/jquery-ui-1.8.18.custom.min.js"></script>
-    <script type="text/javascript" src="javascript/jquery.ui.touch-punch.js"></script>
-    <script type="text/javascript" src="javascript/underscore-min.js"></script>
-    <script type="text/javascript" src="javascript/json2.js"></script>
-    <script type="text/javascript" src="javascript/backbone-min.js"></script>
-    <script src="javascript/soundmanagerv2/script/soundmanager2-nodebug-jsmin.js"></script>
+    <script type="text/javascript" src="javascript/vender/jquery-ui-1.8.18.custom.min.js"></script>
+    <script type="text/javascript" src="javascript/vender/jquery.ui.touch-punch.js"></script>
+    <script type="text/javascript" src="javascript/vender/underscore-min.js"></script>
+    <script type="text/javascript" src="javascript/vender/json2.js"></script>
+    <script type="text/javascript" src="javascript/vender/backbone-min.js"></script>
+    <script type="text/javascript" src="javascript/vender/soundmanagerv2/script/soundmanager2-nodebug-jsmin.js"></script>
 
     <script>
     var require = {"baseUrl":'javascript'}
-    soundManager.url = 'javascript/soundmanagerv2/swf/';
+    soundManager.url = 'javascript/vender/soundmanagerv2/swf/';
     soundManager.defaultOptions.volume = 100;
     soundManager.onready(function() {
       soundManager.createSound({
         id:'camera-click',
         url:'sound/camera_click.ogg',
         loops: 1
-        })
+        }).load();
 
     });
     </script>
-    <script data-main="main" src="javascript/require.js"></script>
+    <script data-main="main" src="javascript/vender/require.js"></script>
   </body>
 </html>
