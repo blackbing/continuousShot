@@ -1,4 +1,4 @@
-This project demostrate how to capture images from video. Like HTC one X awesome camera.
+This project demostrates how to capture images from video. Like HTC one X awesome camera.
 
 ###Compile CoffeeScript
 
